@@ -1,7 +1,7 @@
 import { httpClient } from './httpClient';
 
 export type LoginRequest = {
-  email: string;
+  usernameOrEmail: string;
   password: string;
 };
 
@@ -16,7 +16,7 @@ export type LoginResponse = {
 
 export const authService = {
   async login(payload: LoginRequest): Promise<LoginResponse> {
-    const { data } = await httpClient.post<LoginResponse>('/auth/login', payload);
+    const { data } = await httpClient.post<LoginResponse>('/api/auth/login', payload);
     return data;
   },
 };

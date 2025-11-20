@@ -4,7 +4,7 @@ import { authService } from '../../api/auth.service';
 import { useAuth } from './useAuth';
 
 type LoginFormState = {
-  email: string;
+  usernameOrEmail: string;
   password: string;
 };
 
@@ -13,7 +13,7 @@ type LoginErrors = Partial<Record<keyof LoginFormState, string>>;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const LoginPage: React.FC = () => {
-  const [form, setForm] = useState<LoginFormState>({ email: '', password: '' });
+  const [form, setForm] = useState<LoginFormState>({ usernameOrEmail: '', password: '' });
   const [errors, setErrors] = useState<LoginErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [globalError, setGlobalError] = useState<string | null>(null);
@@ -30,10 +30,10 @@ export const LoginPage: React.FC = () => {
   const validate = (): boolean => {
     const newErrors: LoginErrors = {};
 
-    if (!form.email) {
-      newErrors.email = 'El correo es obligatorio.';
-    } else if (!emailRegex.test(form.email)) {
-      newErrors.email = 'Ingresa un correo válido.';
+    if (!form.usernameOrEmail) {
+      newErrors.usernameOrEmail = 'El correo es obligatorio.';
+    } else if (!emailRegex.test(form.usernameOrEmail)) {
+      newErrors.usernameOrEmail = 'Ingresa un correo válido.';
     }
 
     if (!form.password) {
@@ -78,18 +78,18 @@ export const LoginPage: React.FC = () => {
 
         <form className="login-form" onSubmit={handleSubmit} noValidate>
           <div className="form-field">
-            <label htmlFor="email">Correo institucional</label>
+            <label htmlFor="usernameOrEmail">Correo institucional</label>
             <div className="field-with-bubble">
               <input
-                id="email"
-                name="email"
-                type="email"
-                value={form.email}
+                id="usernameOrEmail"
+                name="usernameOrEmail"
+                type="usernameOrEmail"
+                value={form.usernameOrEmail}
                 onChange={handleChange}
                 autoComplete="username"
-                className={errors.email ? 'input error' : 'input'}
+                className={errors.usernameOrEmail ? 'input error' : 'input'}
               />
-              {errors.email && <div className="error-bubble">{errors.email}</div>}
+              {errors.usernameOrEmail && <div className="error-bubble">{errors.usernameOrEmail}</div>}
             </div>
           </div>
 

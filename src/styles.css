@@ -207,6 +207,7 @@ a {
   grid-area: content;
   padding: var(--space-4);
   overflow: auto;
+  min-height: 500px;
 }
 
 .grid {
