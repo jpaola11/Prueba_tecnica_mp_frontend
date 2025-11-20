@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppLayout } from "../../layout/AppLayout";
-import { caseStatusService, CaseStatusListResponse } from "../../api/case-status.service";
+import { userRoleService, UserRoleListResponse } from "../../api/user-role.service";
 
-export const CaseStatusListPage: React.FC = () => {
-  const [rows, setRows] = useState<CaseStatusListResponse>({ items: [], total: 0 });
+export const UserRoleListPage: React.FC = () => {
+  const [rows, setRows] = useState<UserRoleListResponse>({ items: [], total: 0 });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -12,7 +12,7 @@ export const CaseStatusListPage: React.FC = () => {
     const load = async () => {
       setLoading(true);
       try {
-        const data = await caseStatusService.list();
+        const data = await userRoleService.list();
         setRows(data);
       } catch (error) {
         console.error(error);
@@ -23,39 +23,39 @@ export const CaseStatusListPage: React.FC = () => {
     load();
   }, []);
 
-  const handleView = (id: number) => navigate(`/case-status/${id}`);
-  const handleEdit = (id: number) => navigate(`/case-status/${id}/editar`);
+  const handleView = (id: number) => navigate(`/user-role/${id}`);
+  const handleEdit = (id: number) => navigate(`/user-role/${id}/editar`);
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm("¿Deseas eliminar este estado?")) return;
+    if (!window.confirm("¿Deseas eliminar esta asignación de rol?")) return;
     try {
-      await caseStatusService.remove(id);
+      await userRoleService.remove(id);
       setRows(prev => ({
         items: prev.items.filter(r => r.id !== id),
         total: prev.total - 1,
       }));
     } catch (error) {
       console.error(error);
-      alert("No fue posible eliminar el estado.");
+      alert("No fue posible eliminar la asignación.");
     }
   };
 
-  const handleCreate = () => navigate("/case-status/nuevo");
+  const handleCreate = () => navigate("/user-role/nuevo");
 
   const handleSaveAll = () => {
     alert("Operación de guardar cambios masivos (pendiente).");
   };
 
   return (
-    <AppLayout sectionTitle="Estados de expediente">
+    <AppLayout sectionTitle="Asignación de Roles">
       <div className="page-header">
         <div>
-          <h1>Estados de expediente</h1>
-          <p className="page-subtitle">Catálogo de estados del ciclo del expediente.</p>
+          <h1>Asignaciones de Roles</h1>
+          <p className="page-subtitle">Roles asignados a usuarios del sistema.</p>
         </div>
         <div className="page-actions">
           <button className="btn btn-secondary" onClick={handleSaveAll}>Guardar cambios</button>
-          <button className="btn btn-primary" onClick={handleCreate}>Nuevo estado</button>
+          <button className="btn btn-primary" onClick={handleCreate}>Nueva asignación</button>
         </div>
       </div>
 
@@ -67,28 +67,28 @@ export const CaseStatusListPage: React.FC = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>Código</th>
-                  <th>Nombre</th>
-                  <th>Descripción</th>
+                  <th>Usuario</th>
+                  <th>Rol</th>
+                  <th>Fecha asignación</th>
                   <th className="text-right">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.items.length ? (
-                  rows.items.map(s => (
-                    <tr key={s.id}>
-                      <td>{s.code}</td>
-                      <td>{s.name}</td>
-                      <td>{s.description || "—"}</td>
+                  rows.items.map(r => (
+                    <tr key={r.id}>
+                      <td>{r.userId}</td>
+                      <td>{r.roleId}</td>
+                      <td>{new Date(r.assignedAt).toLocaleString()}</td>
                       <td className="text-right">
-                        <button className="btn-table" onClick={() => handleView(s.id)}>Ver</button>
-                        <button className="btn-table" onClick={() => handleEdit(s.id)}>Editar</button>
-                        <button className="btn-table danger" onClick={() => handleDelete(s.id)}>Eliminar</button>
+                        <button className="btn-table" onClick={() => handleView(r.id)}>Ver</button>
+                        <button className="btn-table" onClick={() => handleEdit(r.id)}>Editar</button>
+                        <button className="btn-table danger" onClick={() => handleDelete(r.id)}>Eliminar</button>
                       </td>
                     </tr>
                   ))
                 ) : (
-                  <tr><td colSpan={4} className="text-center">No hay estados registrados.</td></tr>
+                  <tr><td colSpan={4} className="text-center">No hay asignaciones registradas.</td></tr>
                 )}
               </tbody>
             </table>
