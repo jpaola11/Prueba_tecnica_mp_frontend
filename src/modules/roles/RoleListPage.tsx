@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AppLayout } from '../../layout/AppLayout';
-import { roleService, RoleDto } from '../../api/role.service';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AppLayout } from "../../layout/AppLayout";
+import { roleService, RoleListResponse } from "../../api/role.service";
 
 export const RoleListPage: React.FC = () => {
-  const [rows, setRows] = useState<RoleDto[]>([]);
+  const [rows, setRows] = useState<RoleListResponse>({ items: [], total: 0 });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -13,7 +13,7 @@ export const RoleListPage: React.FC = () => {
       setLoading(true);
       try {
         const data = await roleService.list();
-        setRows(data);
+        setRows(data); // data = { items, total }
       } catch (error) {
         console.error(error);
       } finally {
@@ -32,23 +32,26 @@ export const RoleListPage: React.FC = () => {
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('¿Deseas eliminar este rol?')) return;
+    if (!window.confirm("¿Deseas eliminar este rol?")) return;
     try {
       await roleService.remove(id);
-      setRows((prev) => prev.filter((r) => r.id !== id));
+
+      setRows((prev) => ({
+        items: prev.items.filter((r) => r.id !== id),
+        total: prev.total - 1,
+      }));
     } catch (error) {
       console.error(error);
-      alert('No fue posible eliminar el rol.');
+      alert("No fue posible eliminar el rol.");
     }
   };
 
   const handleCreate = () => {
-    navigate('/roles/nuevo');
+    navigate("/roles/nuevo");
   };
 
   const handleSaveAll = async () => {
-    // Stub para futuras operaciones masivas
-    alert('Operación de guardar cambios masivos (pendiente de implementación).');
+    alert("Operación de guardar cambios masivos (pendiente de implementación).");
   };
 
   return (
@@ -56,7 +59,9 @@ export const RoleListPage: React.FC = () => {
       <div className="page-header">
         <div>
           <h1>Roles</h1>
-          <p className="page-subtitle">Administración de roles y permisos del sistema.</p>
+          <p className="page-subtitle">
+            Administración de roles y permisos del sistema.
+          </p>
         </div>
         <div className="page-actions">
           <button className="btn btn-secondary" onClick={handleSaveAll}>
@@ -83,25 +88,37 @@ export const RoleListPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {rows.map((r) => (
-                  <tr key={r.id}>
-                    <td>{r.code}</td>
-                    <td>{r.name}</td>
-                    <td>{r.description || '—'}</td>
-                    <td className="text-right">
-                      <button className="btn-table" onClick={() => handleView(r.id)}>
-                        Ver
-                      </button>
-                      <button className="btn-table" onClick={() => handleEdit(r.id)}>
-                        Editar
-                      </button>
-                      <button className="btn-table danger" onClick={() => handleDelete(r.id)}>
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-                {rows.length === 0 && (
+                {rows.items.length > 0 ? (
+                  rows.items.map((r) => (
+                    <tr key={r.id}>
+                      <td>{r.code}</td>
+                      <td>{r.name}</td>
+                      <td>{r.description || "—"}</td>
+                      <td className="text-right">
+                        <button
+                          className="btn-table"
+                          onClick={() => handleView(r.id)}
+                        >
+                          Ver
+                        </button>
+
+                        <button
+                          className="btn-table"
+                          onClick={() => handleEdit(r.id)}
+                        >
+                          Editar
+                        </button>
+
+                        <button
+                          className="btn-table danger"
+                          onClick={() => handleDelete(r.id)}
+                        >
+                          Eliminar
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
                   <tr>
                     <td colSpan={4} className="text-center">
                       No hay roles registrados.
