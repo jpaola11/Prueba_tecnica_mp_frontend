@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { caseStatusService, CaseStatusDto } from '../../api/case-status.service';
+import { caseStatusService, CaseStatusDto } from '../api/case-status.service';
 
 export const CaseStatusDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

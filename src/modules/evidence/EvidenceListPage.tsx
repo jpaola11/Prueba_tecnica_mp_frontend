@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { evidenceService, EvidenceDto, EvidenceQueryDto } from '../../api/evidence.service';
+import { evidenceService, EvidenceDto, EvidenceQueryDto } from '../api/evidence.service';
 
 export const EvidenceListPage: React.FC = () => {
   const [filters, setFilters] = useState<EvidenceQueryDto>({});

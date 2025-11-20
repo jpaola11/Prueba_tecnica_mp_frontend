@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { orgUnitService, OrgUnitDto, CreateOrgUnitDto } from '../../api/org-unit.service';
+import { orgUnitService, OrgUnitDto, CreateOrgUnitDto } from '../api/org-unit.service';
 
 type OrgUnitForm = CreateOrgUnitDto;
 type OrgUnitFormErrors = Partial<Record<keyof OrgUnitForm, string>>;

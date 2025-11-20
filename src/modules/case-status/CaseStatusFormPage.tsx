@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { caseStatusService, CaseStatusDto, CreateCaseStatusDto } from '../../api/case-status.service';
+import { caseStatusService, CaseStatusDto, CreateCaseStatusDto } from '../api/case-status.service';
 
 type CaseStatusForm = CreateCaseStatusDto;
 type CaseStatusFormErrors = Partial<Record<keyof CaseStatusForm, string>>;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { userService, CreateUserDto, UserDto } from '../../api/user.service';
+import { userService, CreateUserDto, UserDto } from '../api/user.service';
 
 type UserForm = CreateUserDto;
 type UserFormErrors = Partial<Record<keyof UserForm | 'passwordConfirm', string>>;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { userService, UserDto } from '../../api/user.service';
+import { userService, UserDto } from '../api/user.service';
 
 export const UserDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

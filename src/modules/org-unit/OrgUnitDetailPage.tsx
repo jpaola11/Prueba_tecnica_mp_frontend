@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { orgUnitService, OrgUnitDto } from '../../api/org-unit.service';
+import { orgUnitService, OrgUnitDto } from '../api/org-unit.service';
 
 export const OrgUnitDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

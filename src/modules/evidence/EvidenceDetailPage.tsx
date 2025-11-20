@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { evidenceService, EvidenceDto } from '../../api/evidence.service';
+import { evidenceService, EvidenceDto } from '../api/evidence.service';
 
 export const EvidenceDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

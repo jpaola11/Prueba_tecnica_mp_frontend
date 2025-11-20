@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { userService, UserDto, UserQueryDto } from '../../api/user.service';
+import { userService, UserDto, UserQueryDto } from '../api/user.service';
 
 export const UserListPage: React.FC = () => {
   const [filters, setFilters] = useState<UserQueryDto>({});

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { orgUnitService, OrgUnitDto } from '../../api/org-unit.service';
+import { caseStatusService, CaseStatusDto } from '../api/case-status.service';
 
-export const OrgUnitListPage: React.FC = () => {
-  const [rows, setRows] = useState<OrgUnitDto[]>([]);
+export const CaseStatusListPage: React.FC = () => {
+  const [rows, setRows] = useState<CaseStatusDto[]>([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -12,11 +12,11 @@ export const OrgUnitListPage: React.FC = () => {
     const load = async () => {
       setLoading(true);
       try {
-        const data = await orgUnitService.list();
+        const data = await caseStatusService.list();
         setRows(data);
       } catch (error) {
         console.error(error);
-        alert('No fue posible cargar las unidades organizacionales.');
+        alert('No fue posible cargar los estados de caso.');
       } finally {
         setLoading(false);
       }
@@ -25,40 +25,40 @@ export const OrgUnitListPage: React.FC = () => {
   }, []);
 
   const handleView = (id: number) => {
-    navigate(`/org-units/${id}`);
+    navigate(`/case-status/${id}`);
   };
 
   const handleEdit = (id: number) => {
-    navigate(`/org-units/${id}/editar`);
+    navigate(`/case-status/${id}/editar`);
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('¿Deseas eliminar esta unidad?')) return;
+    if (!window.confirm('¿Deseas eliminar este estado de caso?')) return;
     try {
-      await orgUnitService.remove(id);
-      setRows((prev) => prev.filter((u) => u.id !== id));
+      await caseStatusService.remove(id);
+      setRows((prev) => prev.filter((r) => r.id !== id));
     } catch (error) {
       console.error(error);
-      alert('No fue posible eliminar la unidad.');
+      alert('No fue posible eliminar el estado de caso.');
     }
   };
 
   const handleCreate = () => {
-    navigate('/org-units/nuevo');
+    navigate('/case-status/nuevo');
   };
 
   return (
-    <AppLayout sectionTitle="Unidades organizacionales">
+    <AppLayout sectionTitle="Estados de caso">
       <div className="page-header">
         <div>
-          <h1>Unidades organizacionales</h1>
+          <h1>Estados de caso</h1>
           <p className="page-subtitle">
-            Estructura jerárquica institucional.
+            Catálogo de estados posibles para los expedientes.
           </p>
         </div>
         <div className="page-actions">
           <button className="btn btn-primary" onClick={handleCreate}>
-            Nueva unidad
+            Nuevo estado
           </button>
         </div>
       </div>
@@ -73,30 +73,26 @@ export const OrgUnitListPage: React.FC = () => {
                 <tr>
                   <th>Código</th>
                   <th>Nombre</th>
-                  <th>Unidad padre</th>
-                  <th>Estado</th>
+                  <th>Final</th>
+                  <th>Predeterminado</th>
                   <th className="text-right">Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                {rows.map((u) => (
-                  <tr key={u.id}>
-                    <td>{u.code}</td>
-                    <td>{u.name}</td>
-                    <td>{u.parentName ?? '—'}</td>
-                    <td>
-                      <span className={u.isActive ? 'badge badge-success' : 'badge badge-danger'}>
-                        {u.isActive ? 'Activa' : 'Inactiva'}
-                      </span>
-                    </td>
+                {rows.map((r) => (
+                  <tr key={r.id}>
+                    <td>{r.code}</td>
+                    <td>{r.name}</td>
+                    <td>{r.isFinal ? 'Sí' : 'No'}</td>
+                    <td>{r.isDefault ? 'Sí' : 'No'}</td>
                     <td className="text-right">
-                      <button className="btn-table" onClick={() => handleView(u.id)}>
+                      <button className="btn-table" onClick={() => handleView(r.id)}>
                         Ver
                       </button>
-                      <button className="btn-table" onClick={() => handleEdit(u.id)}>
+                      <button className="btn-table" onClick={() => handleEdit(r.id)}>
                         Editar
                       </button>
-                      <button className="btn-table danger" onClick={() => handleDelete(u.id)}>
+                      <button className="btn-table danger" onClick={() => handleDelete(r.id)}>
                         Eliminar
                       </button>
                     </td>
@@ -105,7 +101,7 @@ export const OrgUnitListPage: React.FC = () => {
                 {rows.length === 0 && !loading && (
                   <tr>
                     <td colSpan={5} className="text-center">
-                      No hay unidades registradas.
+                      No hay estados registrados.
                     </td>
                   </tr>
                 )}

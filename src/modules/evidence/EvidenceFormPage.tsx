@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { evidenceService, EvidenceDto, CreateEvidenceDto } from '../../api/evidence.service';
+import { evidenceService, EvidenceDto, CreateEvidenceDto } from '../api/evidence.service';
 
 type EvidenceForm = CreateEvidenceDto & { caseCode?: string };
 type EvidenceFormErrors = Partial<Record<keyof EvidenceForm, string>>;
