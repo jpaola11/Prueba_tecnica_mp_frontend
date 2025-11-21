@@ -47,10 +47,10 @@ export const OrgUnitListPage: React.FC = () => {
   };
 
   return (
-    <AppLayout sectionTitle="Unidades Organizacionales">
+    <AppLayout sectionTitle="Dependencias">
       <div className="page-header">
         <div>
-          <h1>Unidades Organizacionales</h1>
+          <h1>Dependencias</h1>
           <p className="page-subtitle">Estructura institucional del sistema.</p>
         </div>
         <div className="page-actions">
