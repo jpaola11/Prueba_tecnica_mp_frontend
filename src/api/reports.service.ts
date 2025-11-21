@@ -15,8 +15,6 @@ export type CaseStatusSummaryRow = {
   total: number;
 };
 
-// ==== NUEVOS TIPOS PARA EL REPORTE DETALLADO ====
-
 export type CaseFileReportItem = {
   id: number;
   code: string;
@@ -70,36 +68,22 @@ export type CaseReviewReportItem = {
   newStatusCode: string;
 };
 
-// ==== SERVICIO EXISTENTE + NUEVOS MÉTODOS ====
-
 export const reportsService = {
   async caseStatusSummary(
     filters: ReportsFilter = {},
   ): Promise<CaseStatusSummaryRow[]> {
     const { data } = await httpClient.get<CaseStatusSummaryRow[]>(
-      '/reports/case-status-summary',
+      '/api/reports/case-status-summary',
       { params: filters },
     );
     return data;
   },
 
-  // NUEVO: obtiene los expedientes filtrados (estructura de tu JSON de ejemplo)
   async caseFiles(
     filters: ReportsFilter = {},
   ): Promise<CaseFileReportResponse> {
     const { data } = await httpClient.get<CaseFileReportResponse>(
-      '/case-files',
-      { params: filters },
-    );
-    return data;
-  },
-
-  // NUEVO: obtiene las revisiones (aprobaciones/rechazos) filtradas
-  async caseReviews(
-    filters: ReportsFilter = {},
-  ): Promise<CaseReviewReportItem[]> {
-    const { data } = await httpClient.get<CaseReviewReportItem[]>(
-      '/case-reviews',
+      '/api/case-files',
       { params: filters },
     );
     return data;

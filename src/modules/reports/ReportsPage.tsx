@@ -60,17 +60,11 @@ export const ReportsPage: React.FC = () => {
       const caseFilesResponse = await reportsService.caseFiles(filters);
       const caseFiles: CaseFileReportItem[] = caseFilesResponse.items;
 
-      // 3) Revisiones (aprobaciones/rechazos)
-      const reviews: CaseReviewReportItem[] = await reportsService.caseReviews(
-        filters,
-      );
-
       // 4) Generar el PDF
       generateCaseStatusPdf({
         filters,
         summaryRows,
         caseFiles,
-        reviews,
       });
     } catch (error) {
       console.error(error);
@@ -91,13 +85,6 @@ export const ReportsPage: React.FC = () => {
           </p>
         </div>
         <div className="page-actions">
-          <button
-            className="btn btn-secondary"
-            type="button"
-            onClick={handleExportExcel}
-          >
-            Exportar a Excel
-          </button>
           <button
             className="btn btn-secondary"
             type="button"
