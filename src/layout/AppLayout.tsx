@@ -52,6 +52,12 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ sectionTitle, children }) 
             Roles
           </button>
           <button
+            className={isActive('/users') ? 'menu-item active' : 'menu-item'}
+            onClick={() => go('/users')}
+          >
+            Usuarios
+          </button>
+          <button
             className={isActive('/case-files') ? 'menu-item active' : 'menu-item'}
             onClick={() => go('/case-files')}
           >
