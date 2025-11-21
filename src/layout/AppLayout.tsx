@@ -12,7 +12,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ sectionTitle, children }) 
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
+  console.log(user)
   const toggleSidebar = () => setCollapsed((prev) => !prev);
 
   const go = (path: string) => {
@@ -63,21 +63,6 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ sectionTitle, children }) 
           >
             Dependencia
           </button>
-         {/** 
-          <button
-            className={isActive('/evidence') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/evidence')}
-          >
-            Evidencias
-          </button>*/}
-
-          <button
-            className={isActive('/case-status') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/case-status')}
-          >
-            Estado 
-          </button>
-
           <button
             className={isActive('/case-files') ? 'menu-item active' : 'menu-item'}
             onClick={() => go('/case-files')}
@@ -101,8 +86,8 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ sectionTitle, children }) 
           <div className="topbar-right">
             <div className="user-summary">
               <div className="user-info">
-                <span className="user-name">{user?.name ?? 'Usuario'}</span>
-                <span className="user-role">{user?.role ?? '—'}</span>
+                <span className="user-name">{user?.name ?? 'Nombre del usuario'}</span>
+                <span className="user-role">{user?.role ?? 'Rol del usuario'}</span>
               </div>
               <button className="btn-ghost" type="button" onClick={handleLogout}>
                 Cerrar sesión

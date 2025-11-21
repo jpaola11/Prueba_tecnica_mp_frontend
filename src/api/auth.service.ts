@@ -5,18 +5,24 @@ export type AuthLoginDto = {
   password: string;
 };
 
+export type AuthRoleDto = {
+  id: number;
+  code: string;
+  name: string;
+};
+
+export type AuthUserDto = {
+  id: number;
+  email: string;
+  username: string;
+  name: string | null;
+  roles: AuthRoleDto[];
+};
+
 export type AuthResponseDto = {
   accessToken: string;
-  refreshToken?: string; // si tu backend lo usa
-  user: {
-    id: number;
-    username: string;
-    email: string;
-    fullName: string;
-    roleId: number;
-    orgUnitId?: number;
-    isActive: boolean;
-  };
+  refreshToken?: string;
+  user: AuthUserDto;
 };
 
 export const authService = {
@@ -36,10 +42,8 @@ export const authService = {
     return data;
   },
 
-  async me(): Promise<AuthResponseDto["user"]> {
-    const { data } = await httpClient.get<AuthResponseDto["user"]>(
-      "/api/auth/me"
-    );
+  async me(): Promise<AuthUserDto> {
+    const { data } = await httpClient.get<AuthUserDto>("/api/auth/me");
     return data;
   },
 
