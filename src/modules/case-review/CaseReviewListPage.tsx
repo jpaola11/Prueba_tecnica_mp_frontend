@@ -70,11 +70,11 @@ export const CaseReviewListPage: React.FC = () => {
                 {rows.items.length > 0 ? (
                   rows.items.map((r) => (
                     <tr key={r.id}>
-                      <td>{r.caseFileId}</td>
+                      <td>{r.caseId}</td>
                       <td>{r.reviewerId}</td>
-                      <td>{r.statusId}</td>
-                      <td>{r.comments}</td>
-                      <td>{new Date(r.createdAt).toLocaleString()}</td>
+                      <td>{r.newStatusId}</td>
+                      <td>{r.comment}</td>
+                      <td>{r.createdAt ? new Date(r.createdAt).toLocaleString() : ""}</td>
                       <td className="text-right">
                         <button className="btn-table" onClick={() => handleView(r.id)}>
                           Ver

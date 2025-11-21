@@ -54,7 +54,12 @@ export const LoginPage: React.FC = () => {
       setSubmitting(true);
       setGlobalError(null);
       const resp = await authService.login(form);
-      login(resp.accessToken, resp.user);
+      const userWithRole = {
+        id: resp.user.id,
+        name: resp.user.name ?? '',
+        role: (resp.user as any).role ?? 'user',
+      };
+      login(resp.accessToken, userWithRole);
       navigate('/dashboard', { replace: true });
     } catch (error) {
       console.error(error);

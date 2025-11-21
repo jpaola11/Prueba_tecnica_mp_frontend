@@ -77,8 +77,8 @@ export const EvidenceListPage: React.FC = () => {
                 {rows.items.length ? (
                   rows.items.map(e => (
                     <tr key={e.id}>
-                      <td>{e.caseFileId}</td>
-                      <td>{e.name}</td>
+                      <td>{e.caseId}</td>
+                      <td>{e.description}</td>
                       <td>{e.fileUrl ? "Sí" : "No"}</td>
                       <td className="text-right">
                         <button className="btn-table" onClick={() => handleView(e.id)}>Ver</button>

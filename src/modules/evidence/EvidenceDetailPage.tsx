@@ -34,7 +34,7 @@ export const EvidenceDetailPage: React.FC = () => {
           </div>
           <div>
             <h3>Tipo</h3>
-            <p>{evidence?.type ?? '—'}</p>
+            <p>{evidence?.fileType ?? '—'}</p>
           </div>
           <div className="grid-span-2">
             <h3>Descripción</h3>
