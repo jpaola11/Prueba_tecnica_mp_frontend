@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { evidenceService, EvidenceDto } from '../api/evidence.service';
+import { evidenceService, EvidenceDto } from '../../api/evidence.service';
 
 export const EvidenceDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,7 +46,7 @@ export const EvidenceDetailPage: React.FC = () => {
           </div>
           <div>
             <h3>Fecha de registro</h3>
-            <p>{evidence?.registeredAt ?? '—'}</p>
+            <p>{evidence?.createdAt ?? '—'}</p>
           </div>
           <div className="grid-span-2">
             <h3>Archivo</h3>

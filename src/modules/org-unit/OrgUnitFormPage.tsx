@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { orgUnitService, OrgUnitDto, CreateOrgUnitDto } from '../api/org-unit.service';
+import { orgUnitService, OrgUnitDto, CreateOrgUnitDto } from '../../api/org-unit.service';
 
 type OrgUnitForm = CreateOrgUnitDto;
 type OrgUnitFormErrors = Partial<Record<keyof OrgUnitForm, string>>;
@@ -90,7 +90,7 @@ export const OrgUnitFormPage: React.FC = () => {
       } else {
         await orgUnitService.create(form);
       }
-      navigate('/org-units');
+      navigate('/org-unit');
     } catch (error) {
       console.error(error);
       alert('No fue posible guardar la unidad.');
@@ -98,7 +98,7 @@ export const OrgUnitFormPage: React.FC = () => {
   };
 
   const handleCancel = () => {
-    navigate('/org-units');
+    navigate('/org-unit');
   };
 
   return (

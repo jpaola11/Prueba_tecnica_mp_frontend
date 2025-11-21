@@ -31,19 +31,24 @@ export type UpdateOrgUnitDto = Partial<{
 }>;
 
 export const orgUnitService = {
-  async list(): Promise<OrgUnitListResponse> {
-    const { data } = await httpClient.get<OrgUnitListResponse>("/api/org-unit");
+  async list(): Promise<OrgUnitDto[]> {
+    const { data } = await httpClient.get<OrgUnitListResponse>("/api/org-units");
+    return data.items;
+  },
+
+  async listall(): Promise<OrgUnitListResponse> {
+    const { data } = await httpClient.get<OrgUnitListResponse>("/api/org-units");
     return data;
   },
 
   async findOne(id: number): Promise<OrgUnitDto> {
-    const { data } = await httpClient.get<OrgUnitDto>(`/api/org-unit/${id}`);
+    const { data } = await httpClient.get<OrgUnitDto>(`/api/org-units/${id}`);
     return data;
   },
 
   async create(payload: CreateOrgUnitDto): Promise<OrgUnitDto> {
     const { data } = await httpClient.post<OrgUnitDto>(
-      "/api/org-unit",
+      "/api/org-units",
       payload
     );
     return data;
@@ -51,13 +56,13 @@ export const orgUnitService = {
 
   async update(id: number, payload: UpdateOrgUnitDto): Promise<OrgUnitDto> {
     const { data } = await httpClient.put<OrgUnitDto>(
-      `/api/org-unit/${id}`,
+      `/api/org-units/${id}`,
       payload
     );
     return data;
   },
 
   async remove(id: number): Promise<void> {
-    await httpClient.delete(`/api/org-unit/${id}`);
+    await httpClient.delete(`/api/org-units/${id}`);
   },
 };

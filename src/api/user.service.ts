@@ -20,8 +20,9 @@ export type CreateUserDto = {
   email: string;
   fullName: string;
   password: string;
-  roleId: number;
+ /* roleId: number | undefined | null;*/
   orgUnitId?: number;
+  isActive?: boolean;
 };
 
 export type UpdateUserDto = Partial<{
@@ -29,9 +30,9 @@ export type UpdateUserDto = Partial<{
   email: string;
   fullName: string;
   password: string;
-  roleId: number;
+  roleId: number | undefined | null;
   orgUnitId: number;
-  isActive: boolean;
+  isActive?: boolean;
 }>;
 
 export const userService = {

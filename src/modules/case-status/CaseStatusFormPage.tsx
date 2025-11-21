@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { caseStatusService, CaseStatusDto, CreateCaseStatusDto } from '../api/case-status.service';
+import { caseStatusService, CaseStatusDto, CreateCaseStatusDto } from '../../api/case-status.service';
 
 type CaseStatusForm = CreateCaseStatusDto;
 type CaseStatusFormErrors = Partial<Record<keyof CaseStatusForm, string>>;
@@ -15,8 +15,6 @@ export const CaseStatusFormPage: React.FC = () => {
     code: '',
     name: '',
     description: '',
-    isFinal: false,
-    isDefault: false,
   });
 
   const [errors, setErrors] = useState<CaseStatusFormErrors>({});
@@ -32,8 +30,6 @@ export const CaseStatusFormPage: React.FC = () => {
           code: data.code,
           name: data.name,
           description: data.description ?? '',
-          isFinal: !!data.isFinal,
-          isDefault: !!data.isDefault,
         });
       } catch (error) {
         console.error(error);
@@ -129,32 +125,6 @@ export const CaseStatusFormPage: React.FC = () => {
                   value={form.description}
                   onChange={handleChange}
                 />
-              </div>
-
-              <div className="form-field">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="isFinal"
-                    checked={!!form.isFinal}
-                    onChange={handleChange}
-                    style={{ marginRight: '8px' }}
-                  />
-                  Marca de estado final
-                </label>
-              </div>
-
-              <div className="form-field">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="isDefault"
-                    checked={!!form.isDefault}
-                    onChange={handleChange}
-                    style={{ marginRight: '8px' }}
-                  />
-                  Predeterminado
-                </label>
               </div>
 
               <div className="form-actions grid-span-2">

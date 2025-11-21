@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { userService, CreateUserDto, UserDto } from '../api/user.service';
+import { userService, CreateUserDto, UserDto } from '../../api/user.service';
+import { orgUnitService, OrgUnitDto } from '../../api/org-unit.service';
+import { roleService, RoleDto } from '../../api/role.service';
 
 type UserForm = CreateUserDto;
 type UserFormErrors = Partial<Record<keyof UserForm | 'passwordConfirm', string>>;
@@ -17,7 +19,7 @@ export const UserFormPage: React.FC = () => {
     email: '',
     password: '',
     orgUnitId: undefined,
-    roleId: undefined,
+   // roleId: undefined,
     isActive: true,
   });
 
@@ -25,6 +27,34 @@ export const UserFormPage: React.FC = () => {
   const [errors, setErrors] = useState<UserFormErrors>({});
   const [loading, setLoading] = useState(false);
 
+  // Catálogos
+  const [dependencies, setDependencies] = useState<OrgUnitDto[]>([]);
+  const [roles, setRoles] = useState<RoleDto[]>([]);
+  const [catalogLoading, setCatalogLoading] = useState(false);
+
+  // Cargar catálogos de dependencias y roles
+  useEffect(() => {
+    const loadCatalogs = async () => {
+      setCatalogLoading(true);
+      try {
+        const [orgUnitsData, rolesResponse] = await Promise.all([
+          orgUnitService.list(),      // devuelve OrgUnitDto[]
+          roleService.list(),         // devuelve RoleListResponse
+        ]);
+
+        setDependencies(orgUnitsData);
+        setRoles(rolesResponse.items ?? []);
+      } catch (error) {
+        console.error('Error cargando catálogos de dependencias/roles', error);
+      } finally {
+        setCatalogLoading(false);
+      }
+    };
+
+    loadCatalogs();
+  }, []);
+
+  // Cargar usuario en edición
   useEffect(() => {
     const load = async () => {
       if (!isEdit) return;
@@ -37,7 +67,7 @@ export const UserFormPage: React.FC = () => {
           email: data.email,
           password: '',
           orgUnitId: data.orgUnitId ?? undefined,
-          roleId: data.roleId ?? undefined,
+          /*roleId: data.roleId ?? undefined,*/
           isActive: data.isActive,
         });
       } catch (error) {
@@ -160,31 +190,51 @@ export const UserFormPage: React.FC = () => {
                 {errors.email && <div className="error-bubble">{errors.email}</div>}
               </div>
 
+              {/* Dependencia (antes Unidad organizacional) */}
               <div className="form-field">
-                <label htmlFor="orgUnitId">Unidad organizacional</label>
+                <label htmlFor="orgUnitId">
+                  Dependencia
+                  {catalogLoading && <span style={{ marginLeft: 8, fontSize: 12 }}>(cargando…)</span>}
+                </label>
                 <select
                   id="orgUnitId"
                   name="orgUnitId"
                   className="input"
                   value={form.orgUnitId ?? ''}
                   onChange={handleChange}
+                  disabled={catalogLoading}
                 >
                   <option value="">— Seleccione —</option>
+                  {dependencies.map((dep) => (
+                    <option key={dep.id} value={dep.id}>
+                      {dep.name}
+                    </option>
+                  ))}
                 </select>
               </div>
-
+            
+              {/* Rol 
               <div className="form-field">
-                <label htmlFor="roleId">Rol</label>
+                <label htmlFor="roleId">
+                  Rol
+                  {catalogLoading && <span style={{ marginLeft: 8, fontSize: 12 }}>(cargando…)</span>}
+                </label>
                 <select
                   id="roleId"
                   name="roleId"
                   className="input"
                   value={form.roleId ?? ''}
                   onChange={handleChange}
+                  disabled={catalogLoading}
                 >
                   <option value="">— Seleccione —</option>
+                  {roles.map((role) => (
+                    <option key={role.id} value={role.id}>
+                      {role.name}
+                    </option>
+                  ))}
                 </select>
-              </div>
+              </div> */}
 
               {!isEdit && (
                 <>

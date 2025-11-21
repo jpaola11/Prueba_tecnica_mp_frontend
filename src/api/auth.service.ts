@@ -1,7 +1,7 @@
 import { httpClient } from "./httpClient";
 
 export type AuthLoginDto = {
-  email: string;
+  usernameOrEmail: string;
   password: string;
 };
 

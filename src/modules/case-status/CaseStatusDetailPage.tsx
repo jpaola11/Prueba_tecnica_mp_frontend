@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { caseStatusService, CaseStatusDto } from '../api/case-status.service';
+import { caseStatusService, CaseStatusDto } from '../../api/case-status.service';
 
 export const CaseStatusDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,14 +31,6 @@ export const CaseStatusDetailPage: React.FC = () => {
           <div>
             <h3>Código</h3>
             <p>{status?.code ?? '—'}</p>
-          </div>
-          <div>
-            <h3>Final</h3>
-            <p>{status?.isFinal ? 'Sí' : 'No'}</p>
-          </div>
-          <div>
-            <h3>Predeterminado</h3>
-            <p>{status?.isDefault ? 'Sí' : 'No'}</p>
           </div>
           <div className="grid-span-2">
             <h3>Descripción</h3>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppLayout } from '../../layout/AppLayout';
-import { orgUnitService, OrgUnitDto } from '../api/org-unit.service';
+import { orgUnitService, OrgUnitDto } from '../../api/org-unit.service';
 
 export const OrgUnitDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,10 +31,6 @@ export const OrgUnitDetailPage: React.FC = () => {
           <div>
             <h3>Código</h3>
             <p>{unit?.code ?? '—'}</p>
-          </div>
-          <div>
-            <h3>Unidad padre</h3>
-            <p>{unit?.parentName ?? '—'}</p>
           </div>
           <div>
             <h3>Estado</h3>

@@ -12,7 +12,7 @@ export const OrgUnitListPage: React.FC = () => {
     const load = async () => {
       setLoading(true);
       try {
-        const data = await orgUnitService.list();
+        const data = await orgUnitService.listall();
         setRows(data);
       } catch (error) {
         console.error(error);

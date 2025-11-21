@@ -2,11 +2,22 @@ import { httpClient } from "./httpClient";
 
 export type EvidenceDto = {
   id: number;
-  caseFileId: number;
-  name: string;
-  description?: string;
+  caseId: number;
+  seqNumber: number;
+  description: string;
+  color?: string;
+  sizeText?: string;
+  weightValue?: number;
+  weightUnit?: string;
+  location?: string;
+  technicianId: number;
+  observations?: string;
+
   fileUrl?: string;
   fileType?: string;
+
+  caseCode?: string;
+
   createdAt: string;
   updatedAt?: string;
 };
@@ -17,69 +28,91 @@ export type EvidenceListResponse = {
 };
 
 export type CreateEvidenceDto = {
-  caseFileId: number;
-  name: string;
-  description?: string;
-  file?: File | null; // opcional, puede ser evidencia sin archivo
+  caseId: number;
+  seqNumber: number;
+  description: string;
+  color?: string;
+  sizeText?: string;
+  weightValue?: number;
+  weightUnit?: string;
+  location?: string;
+  technicianId: number;
+  observations?: string;
 };
 
-export type UpdateEvidenceDto = Partial<{
-  name: string;
-  description: string;
-  file: File | null;
-}>;
+export type UpdateEvidenceDto = Partial<Omit<CreateEvidenceDto, "caseId">>;
 
 export const evidenceService = {
-  async list(caseFileId?: number): Promise<EvidenceListResponse> {
+  async list(caseId?: number): Promise<EvidenceListResponse> {
     const { data } = await httpClient.get<EvidenceListResponse>(
-      "/api/evidence",
-      {
-        params: { caseFileId },
-      }
+      "/api/evidences",
+      { params: { caseId } }
     );
     return data;
   },
 
   async findOne(id: number): Promise<EvidenceDto> {
-    const { data } = await httpClient.get<EvidenceDto>(`/api/evidence/${id}`);
+    const { data } = await httpClient.get<EvidenceDto>(`/api/evidences/${id}`);
     return data;
   },
 
   async create(payload: CreateEvidenceDto): Promise<EvidenceDto> {
-    const formData = new FormData();
-    formData.append("caseFileId", String(payload.caseFileId));
-    formData.append("name", payload.name);
-    if (payload.description) formData.append("description", payload.description);
-    if (payload.file) formData.append("file", payload.file);
-
     const { data } = await httpClient.post<EvidenceDto>(
-      "/api/evidence",
-      formData,
+      "/api/evidences",
+      payload,  
       {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
+  
     return data;
   },
+  
 
   async update(id: number, payload: UpdateEvidenceDto): Promise<EvidenceDto> {
     const formData = new FormData();
-    if (payload.name) formData.append("name", payload.name);
-    if (payload.description)
+
+    
+    if (payload.seqNumber !== undefined) {
+      formData.append("seqNumber", String(payload.seqNumber));
+    }
+    if (payload.description !== undefined) {
       formData.append("description", payload.description);
-    if (payload.file) formData.append("file", payload.file);
+    }
+    if (payload.color !== undefined) {
+      formData.append("color", payload.color);
+    }
+    if (payload.sizeText !== undefined) {
+      formData.append("sizeText", payload.sizeText);
+    }
+    if (payload.weightValue !== undefined) {
+      formData.append("weightValue", String(payload.weightValue));
+    }
+    if (payload.weightUnit !== undefined) {
+      formData.append("weightUnit", payload.weightUnit);
+    }
+    if (payload.location !== undefined) {
+      formData.append("location", payload.location);
+    }
+    if (payload.technicianId !== undefined) {
+      formData.append("technicianId", String(payload.technicianId));
+    }
+    if (payload.observations !== undefined) {
+      formData.append("observations", payload.observations);
+    }
+   
 
     const { data } = await httpClient.put<EvidenceDto>(
-      `/api/evidence/${id}`,
+      `/api/evidences/${id}`,
       formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
+      { headers: { "Content-Type": "multipart/form-data" } }
     );
     return data;
   },
 
   async remove(id: number): Promise<void> {
-    await httpClient.delete(`/api/evidence/${id}`);
+    await httpClient.delete(`/api/evidences/${id}`);
   },
 };

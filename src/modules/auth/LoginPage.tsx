@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../../api/auth.service';
+import { authService, AuthLoginDto } from '../../api/auth.service';
 import { useAuth } from './useAuth';
 
 type LoginFormState = {
@@ -13,7 +13,7 @@ type LoginErrors = Partial<Record<keyof LoginFormState, string>>;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const LoginPage: React.FC = () => {
-  const [form, setForm] = useState<LoginFormState>({ usernameOrEmail: '', password: '' });
+  const [form, setForm] = useState<AuthLoginDto>({ usernameOrEmail: '', password: '' });
   const [errors, setErrors] = useState<LoginErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [globalError, setGlobalError] = useState<string | null>(null);

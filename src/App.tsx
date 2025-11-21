@@ -15,8 +15,15 @@ import { EvidenceListPage } from './modules/evidence/EvidenceListPage';
 import { EvidenceDetailPage } from './modules/evidence/EvidenceDetailPage';
 import { EvidenceFormPage } from './modules/evidence/EvidenceFormPage';
 import { CaseFileListPage } from './modules/case-file/CaseFileListPage';
+import { CaseFileFormPage } from './modules/case-file/CaseFileFormPage';
+import { CaseFileDetailPage } from './modules/case-file/CaseFileDetailPage';
+import { CaseStatusListPage } from './modules/case-status/CaseStatusListPage';
+import { CaseStatusFormPage } from './modules/case-status/CaseStatusFormPage';
+import { CaseStatusDetailPage } from './modules/case-status/CaseStatusDetailPage';
+
 import { ReportsPage } from './modules/reports/ReportsPage';
 import { useAuth } from './modules/auth/useAuth';
+
 
 const PrivateRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -54,6 +61,17 @@ export const App: React.FC = () => {
               <Route path="/evidence/:id" element={<EvidenceDetailPage />} />
               <Route path="/evidence/:id/editar" element={<EvidenceFormPage />} />
               <Route path="/case-files" element={<CaseFileListPage />} />
+              <Route path="/case-files/nuevo" element={<CaseFileFormPage />} />
+              <Route path="/case-files/:id/editar" element={<CaseFileFormPage />} />
+              <Route path="/case-files/:id" element={<CaseFileDetailPage />} />
+
+              <Route path="/case-status" element={<CaseStatusListPage />} />
+              <Route path="/case-status/nuevo" element={<CaseStatusFormPage />} />
+              <Route path="/case-status/:id/editar" element={<CaseStatusFormPage />} />
+              <Route path="/case-status/:id" element={<CaseStatusDetailPage />} />
+
+
+              
               <Route path="/reports" element={<ReportsPage />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
