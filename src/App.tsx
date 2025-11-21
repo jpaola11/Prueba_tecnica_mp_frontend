@@ -11,6 +11,9 @@ import { UserFormPage } from './modules/users/UserFormPage';
 import { OrgUnitListPage } from './modules/org-unit/OrgUnitListPage';
 import { OrgUnitDetailPage } from './modules/org-unit/OrgUnitDetailPage';
 import { OrgUnitFormPage } from './modules/org-unit/OrgUnitFormPage';
+import { EvidenceListPage } from './modules/evidence/EvidenceListPage';
+import { EvidenceDetailPage } from './modules/evidence/EvidenceDetailPage';
+import { EvidenceFormPage } from './modules/evidence/EvidenceFormPage';
 import { CaseFileListPage } from './modules/case-file/CaseFileListPage';
 import { ReportsPage } from './modules/reports/ReportsPage';
 import { useAuth } from './modules/auth/useAuth';
@@ -46,6 +49,10 @@ export const App: React.FC = () => {
               <Route path="/org-unit/nuevo" element={<OrgUnitFormPage />} />
               <Route path="/org-unit/:id" element={<OrgUnitDetailPage />} />
               <Route path="/org-unit/:id/editar" element={<OrgUnitFormPage />} />
+              <Route path="/evidence" element={<EvidenceListPage />} />
+              <Route path="/evidence/nuevo" element={<EvidenceFormPage />} />
+              <Route path="/evidence/:id" element={<EvidenceDetailPage />} />
+              <Route path="/evidence/:id/editar" element={<EvidenceFormPage />} />
               <Route path="/case-files" element={<CaseFileListPage />} />
               <Route path="/reports" element={<ReportsPage />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
