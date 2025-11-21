@@ -39,6 +39,13 @@ export const CaseFileListPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  const role = (user?.role ?? '').toLowerCase();
+  const canApproveOrReject =
+    role === 'coordinador' ||
+    role === 'super admin' ||
+    role === 'superadmin' ||
+    role === 'super administrador';
+
   const handleCreate = () => navigate('/case-files/nuevo');
 
   const handleView = (id: number) => {
@@ -83,12 +90,14 @@ export const CaseFileListPage: React.FC = () => {
   };
 
   const openApprove = (caseFile: CaseFileDto) => {
+    if (!canApproveOrReject) return;
     setStatusModal({ mode: 'approve', caseFile });
     setReviewComments('');
     setReviewError(null);
   };
 
   const openReject = (caseFile: CaseFileDto) => {
+    if (!canApproveOrReject) return;
     setStatusModal({ mode: 'reject', caseFile });
     setReviewComments('');
     setReviewError(null);
@@ -170,7 +179,7 @@ export const CaseFileListPage: React.FC = () => {
         </div>
       </div>
 
-      {statusModal.mode && statusModal.caseFile && (
+      {statusModal.mode && statusModal.caseFile && canApproveOrReject && (
         <section className="card mb-3">
           <div className="card-header">
             <h3>Cambio de estado del expediente</h3>
@@ -312,24 +321,28 @@ export const CaseFileListPage: React.FC = () => {
                             >
                               +
                             </button>
-                            <button
-                              type="button"
-                              className="btn-table"
-                              onClick={() => openApprove(r)}
-                              title="Aprobar"
-                              style={{ color: 'green' }}
-                            >
-                              ✓
-                            </button>
-                            <button
-                              type="button"
-                              className="btn-table"
-                              onClick={() => openReject(r)}
-                              title="Rechazar"
-                              style={{ color: 'red' }}
-                            >
-                              ✕
-                            </button>
+                            {canApproveOrReject && (
+                              <>
+                                <button
+                                  type="button"
+                                  className="btn-table"
+                                  onClick={() => openApprove(r)}
+                                  title="Aprobar"
+                                  style={{ color: 'green' }}
+                                >
+                                  ✓
+                                </button>
+                                <button
+                                  type="button"
+                                  className="btn-table"
+                                  onClick={() => openReject(r)}
+                                  title="Rechazar"
+                                  style={{ color: 'red' }}
+                                >
+                                  ✕
+                                </button>
+                              </>
+                            )}
                           </>
                         )}
 

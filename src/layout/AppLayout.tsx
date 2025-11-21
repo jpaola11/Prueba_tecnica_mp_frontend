@@ -12,7 +12,21 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ sectionTitle, children }) 
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(user)
+
+  const role = (user?.role ?? '');
+
+  const isAuxiliar = role === 'Auxiliar';
+  const isCoordinador = role === 'Coordinador';
+  const isSuperAdmin =
+    role === 'Super Admin';
+
+  const canSeeDashboard = isSuperAdmin;
+  const canSeeRoles = isSuperAdmin;
+  const canSeeUsers = isSuperAdmin;
+  const canSeeOrgUnit = isCoordinador || isSuperAdmin;
+  const canSeeCaseFiles = !!user;
+  const canSeeReports = isCoordinador || isSuperAdmin;
+
   const toggleSidebar = () => setCollapsed((prev) => !prev);
 
   const go = (path: string) => {
@@ -39,42 +53,59 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ sectionTitle, children }) 
           </button>
         </div>
         <nav className="sidebar-menu">
-          <button
-            className={isActive('/dashboard') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/dashboard')}
-          >
-            Dashboard
-          </button>
-          <button
-            className={isActive('/roles') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/roles')}
-          >
-            Roles
-          </button>
-          <button
-            className={isActive('/users') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/users')}
-          >
-            Usuarios
-          </button>
-          <button
-            className={isActive('/org-unit') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/org-unit')}
-          >
-            Dependencia
-          </button>
-          <button
-            className={isActive('/case-files') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/case-files')}
-          >
-            Gestión de expedientes
-          </button>
-          <button
-            className={isActive('/reports') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/reports')}
-          >
-            Reportería
-          </button>
+          {canSeeDashboard && (
+            <button
+              className={isActive('/dashboard') ? 'menu-item active' : 'menu-item'}
+              onClick={() => go('/dashboard')}
+            >
+              Dashboard
+            </button>
+          )}
+
+          {canSeeRoles && (
+            <button
+              className={isActive('/roles') ? 'menu-item active' : 'menu-item'}
+              onClick={() => go('/roles')}
+            >
+              Roles
+            </button>
+          )}
+
+          {canSeeUsers && (
+            <button
+              className={isActive('/users') ? 'menu-item active' : 'menu-item'}
+              onClick={() => go('/users')}
+            >
+              Usuarios
+            </button>
+          )}
+
+          {canSeeOrgUnit && (
+            <button
+              className={isActive('/org-unit') ? 'menu-item active' : 'menu-item'}
+              onClick={() => go('/org-unit')}
+            >
+              Dependencia
+            </button>
+          )}
+
+          {canSeeCaseFiles && (
+            <button
+              className={isActive('/case-files') ? 'menu-item active' : 'menu-item'}
+              onClick={() => go('/case-files')}
+            >
+              Gestión de expedientes
+            </button>
+          )}
+
+          {canSeeReports && (
+            <button
+              className={isActive('/reports') ? 'menu-item active' : 'menu-item'}
+              onClick={() => go('/reports')}
+            >
+              Reportería
+            </button>
+          )}
         </nav>
       </aside>
 
