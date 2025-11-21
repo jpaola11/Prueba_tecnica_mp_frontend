@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
 import { AppLayout } from '../../layout/AppLayout';
-import { reportsService, CaseStatusSummaryRow, ReportsFilter } from '../../api/reports.service';
+import {
+  reportsService,
+  CaseStatusSummaryRow,
+  ReportsFilter,
+  CaseFileReportItem,
+  CaseReviewReportItem,
+} from '../../api/reports.service';
+import { generateCaseStatusPdf } from '../reports/generateCaseStatusPdf';
 
 export const ReportsPage: React.FC = () => {
   const [filters, setFilters] = useState<ReportsFilter>({});
   const [rows, setRows] = useState<CaseStatusSummaryRow[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
     setFilters((prev) => ({
       ...prev,
-      [name]: value || undefined,
+      [name]:
+        value === '' || value === undefined
+          ? undefined
+          : name === 'orgUnitId'
+          ? Number(value)
+          : value,
     }));
   };
 
@@ -32,8 +46,38 @@ export const ReportsPage: React.FC = () => {
     alert('Exportar a Excel (pendiente de implementación).');
   };
 
-  const handleExportPdf = () => {
-    alert('Exportar a PDF (pendiente de implementación).');
+  const handleExportPdf = async () => {
+    setLoading(true);
+    try {
+      // 1) Resumen (ya lo tenemos en rows, pero por si no se ha dado clic en "Generar"
+      let summaryRows = rows;
+      if (summaryRows.length === 0) {
+        summaryRows = await reportsService.caseStatusSummary(filters);
+        setRows(summaryRows);
+      }
+
+      // 2) Registros (expedientes)
+      const caseFilesResponse = await reportsService.caseFiles(filters);
+      const caseFiles: CaseFileReportItem[] = caseFilesResponse.items;
+
+      // 3) Revisiones (aprobaciones/rechazos)
+      const reviews: CaseReviewReportItem[] = await reportsService.caseReviews(
+        filters,
+      );
+
+      // 4) Generar el PDF
+      generateCaseStatusPdf({
+        filters,
+        summaryRows,
+        caseFiles,
+        reviews,
+      });
+    } catch (error) {
+      console.error(error);
+      alert('No fue posible exportar el reporte en PDF.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -42,15 +86,25 @@ export const ReportsPage: React.FC = () => {
         <div>
           <h1>Reportería</h1>
           <p className="page-subtitle">
-            Genera reportes consolidados de expedientes por rango de fechas, unidad y estado.
+            Genera reportes consolidados de expedientes por rango de fechas,
+            unidad y estado.
           </p>
         </div>
         <div className="page-actions">
-          <button className="btn btn-secondary" type="button" onClick={handleExportExcel}>
+          <button
+            className="btn btn-secondary"
+            type="button"
+            onClick={handleExportExcel}
+          >
             Exportar a Excel
           </button>
-          <button className="btn btn-secondary" type="button" onClick={handleExportPdf}>
-            Exportar a PDF
+          <button
+            className="btn btn-secondary"
+            type="button"
+            onClick={handleExportPdf}
+            disabled={loading}
+          >
+            {loading ? 'Generando…' : 'Exportar a PDF'}
           </button>
         </div>
       </div>
@@ -110,8 +164,13 @@ export const ReportsPage: React.FC = () => {
             />
           </div>
           <div className="filter-actions grid-span-4">
-            <button className="btn btn-primary" type="button" onClick={handleGenerate}>
-              Generar reporte
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={handleGenerate}
+              disabled={loading}
+            >
+              {loading ? 'Cargando…' : 'Generar reporte'}
             </button>
           </div>
         </div>
