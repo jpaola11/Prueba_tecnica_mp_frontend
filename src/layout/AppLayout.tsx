@@ -13,6 +13,20 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ sectionTitle, children }) 
   const navigate = useNavigate();
   const location = useLocation();
 
+  const role = (user?.role ?? '');
+
+  const isAuxiliar = role === 'Auxiliar';
+  const isCoordinador = role === 'Coordinador';
+  const isSuperAdmin =
+    role === 'Super Admin';
+
+  const canSeeDashboard = isSuperAdmin;
+  const canSeeRoles = isSuperAdmin;
+  const canSeeUsers = isSuperAdmin;
+  const canSeeOrgUnit = isCoordinador || isSuperAdmin;
+  const canSeeCaseFiles = !!user;
+  const canSeeReports = isCoordinador || isSuperAdmin;
+
   const toggleSidebar = () => setCollapsed((prev) => !prev);
 
   const go = (path: string) => {
@@ -39,57 +53,59 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ sectionTitle, children }) 
           </button>
         </div>
         <nav className="sidebar-menu">
-          <button
-            className={isActive('/dashboard') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/dashboard')}
-          >
-            Dashboard
-          </button>
-          <button
-            className={isActive('/roles') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/roles')}
-          >
-            Roles
-          </button>
-          <button
-            className={isActive('/users') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/users')}
-          >
-            Usuarios
-          </button>
-          <button
-            className={isActive('/org-unit') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/org-unit')}
-          >
-            Dependencia
-          </button>
-         {/** 
-          <button
-            className={isActive('/evidence') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/evidence')}
-          >
-            Evidencias
-          </button>*/}
+          {canSeeDashboard && (
+            <button
+              className={isActive('/dashboard') ? 'menu-item active' : 'menu-item'}
+              onClick={() => go('/dashboard')}
+            >
+              Dashboard
+            </button>
+          )}
 
-          <button
-            className={isActive('/case-status') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/case-status')}
-          >
-            Estado 
-          </button>
+          {canSeeRoles && (
+            <button
+              className={isActive('/roles') ? 'menu-item active' : 'menu-item'}
+              onClick={() => go('/roles')}
+            >
+              Roles
+            </button>
+          )}
 
-          <button
-            className={isActive('/case-files') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/case-files')}
-          >
-            Gestión de expedientes
-          </button>
-          <button
-            className={isActive('/reports') ? 'menu-item active' : 'menu-item'}
-            onClick={() => go('/reports')}
-          >
-            Reportería
-          </button>
+          {canSeeUsers && (
+            <button
+              className={isActive('/users') ? 'menu-item active' : 'menu-item'}
+              onClick={() => go('/users')}
+            >
+              Usuarios
+            </button>
+          )}
+
+          {canSeeOrgUnit && (
+            <button
+              className={isActive('/org-unit') ? 'menu-item active' : 'menu-item'}
+              onClick={() => go('/org-unit')}
+            >
+              Dependencia
+            </button>
+          )}
+
+          {canSeeCaseFiles && (
+            <button
+              className={isActive('/case-files') ? 'menu-item active' : 'menu-item'}
+              onClick={() => go('/case-files')}
+            >
+              Gestión de expedientes
+            </button>
+          )}
+
+          {canSeeReports && (
+            <button
+              className={isActive('/reports') ? 'menu-item active' : 'menu-item'}
+              onClick={() => go('/reports')}
+            >
+              Reportería
+            </button>
+          )}
         </nav>
       </aside>
 
@@ -101,8 +117,8 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ sectionTitle, children }) 
           <div className="topbar-right">
             <div className="user-summary">
               <div className="user-info">
-                <span className="user-name">{user?.name ?? 'Usuario'}</span>
-                <span className="user-role">{user?.role ?? '—'}</span>
+                <span className="user-name">{user?.name ?? 'Nombre del usuario'}</span>
+                <span className="user-role">{user?.role ?? 'Rol del usuario'}</span>
               </div>
               <button className="btn-ghost" type="button" onClick={handleLogout}>
                 Cerrar sesión

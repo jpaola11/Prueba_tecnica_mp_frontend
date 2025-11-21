@@ -70,6 +70,14 @@ export const caseFileService = {
     return data;
   },
 
+  async updatestatus(id: number, payload: UpdateCaseFileDto): Promise<CaseFileDto> {
+    const { data } = await httpClient.patch<CaseFileDto>(
+      `/api/case-files/${id}/status`,
+      payload
+    );
+    return data;
+  },
+
   async remove(id: number): Promise<void> {
     await httpClient.delete(`/api/case-files/${id}`);
   },

@@ -20,6 +20,7 @@ import { CaseFileDetailPage } from './modules/case-file/CaseFileDetailPage';
 import { CaseStatusListPage } from './modules/case-status/CaseStatusListPage';
 import { CaseStatusFormPage } from './modules/case-status/CaseStatusFormPage';
 import { CaseStatusDetailPage } from './modules/case-status/CaseStatusDetailPage';
+import { CaseFileEvidenceFormPage } from './modules/case-file/EvidenceFormPage';
 
 import { ReportsPage } from './modules/reports/ReportsPage';
 import { useAuth } from './modules/auth/useAuth';
@@ -64,11 +65,12 @@ export const App: React.FC = () => {
               <Route path="/case-files/nuevo" element={<CaseFileFormPage />} />
               <Route path="/case-files/:id/editar" element={<CaseFileFormPage />} />
               <Route path="/case-files/:id" element={<CaseFileDetailPage />} />
-
               <Route path="/case-status" element={<CaseStatusListPage />} />
               <Route path="/case-status/nuevo" element={<CaseStatusFormPage />} />
               <Route path="/case-status/:id/editar" element={<CaseStatusFormPage />} />
               <Route path="/case-status/:id" element={<CaseStatusDetailPage />} />
+
+              <Route path="/case-files/evidence" element={<CaseFileEvidenceFormPage />} />
 
 
               

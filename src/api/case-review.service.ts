@@ -2,11 +2,12 @@ import { httpClient } from "./httpClient";
 
 export type CaseReviewDto = {
   id: number;
-  caseFileId: number;
+  caseId: number;
+  comment: string;
+  previousStatusId: 1;
+  newStatusId: number;
   reviewerId: number;
-  comments: string;
-  statusId: number;
-  createdAt: string;
+  createdAt?: string;
   updatedAt?: string;
 };
 
@@ -16,10 +17,13 @@ export type CaseReviewListResponse = {
 };
 
 export type CreateCaseReviewDto = {
-  caseFileId: number;
+  caseId: number;
+  comment: string;
+  newStatusId: number;
+  previousStatusId: 1;
   reviewerId: number;
-  comments: string;
-  statusId: number;
+
+
 };
 
 export type UpdateCaseReviewDto = Partial<{
@@ -30,7 +34,7 @@ export type UpdateCaseReviewDto = Partial<{
 export const caseReviewService = {
   async list(caseFileId?: number): Promise<CaseReviewListResponse> {
     const { data } = await httpClient.get<CaseReviewListResponse>(
-      "/api/cases-review",
+      "/api/case-reviews",
       { params: { caseFileId } }
     );
     return data;
@@ -38,14 +42,14 @@ export const caseReviewService = {
 
   async findOne(id: number): Promise<CaseReviewDto> {
     const { data } = await httpClient.get<CaseReviewDto>(
-      `/api/cases-review/${id}`
+      `/api/case-reviews/${id}`
     );
     return data;
   },
 
   async create(payload: CreateCaseReviewDto): Promise<CaseReviewDto> {
     const { data } = await httpClient.post<CaseReviewDto>(
-      "/api/cases-review",
+      "/api/case-reviews",
       payload
     );
     return data;
@@ -53,13 +57,13 @@ export const caseReviewService = {
 
   async update(id: number, payload: UpdateCaseReviewDto): Promise<CaseReviewDto> {
     const { data } = await httpClient.put<CaseReviewDto>(
-      `/api/cases-review/${id}`,
+      `/api/case-reviews/${id}`,
       payload
     );
     return data;
   },
 
   async remove(id: number): Promise<void> {
-    await httpClient.delete(`/api/cases-review/${id}`);
+    await httpClient.delete(`/api/case-reviews/${id}`);
   },
 };

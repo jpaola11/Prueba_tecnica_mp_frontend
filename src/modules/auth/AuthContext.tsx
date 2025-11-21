@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 type AuthContextValue = {
   isAuthenticated: boolean;
   token: string | null;
-  user: { id: number; name: string; role: string } | null;
+  user: { id: number; name: string; role: string; } | null;
   login: (token: string, user: { id: number; name: string; role: string }) => void;
   logout: () => void;
 };
