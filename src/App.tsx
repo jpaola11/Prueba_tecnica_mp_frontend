@@ -8,6 +8,9 @@ import { RoleFormPage } from './modules/roles/RoleFormPage';
 import { UserListPage } from './modules/users/UserListPage';
 import { UserDetailPage } from './modules/users/UserDetailPage';
 import { UserFormPage } from './modules/users/UserFormPage';
+import { OrgUnitListPage } from './modules/org-unit/OrgUnitListPage';
+import { OrgUnitDetailPage } from './modules/org-unit/OrgUnitDetailPage';
+import { OrgUnitFormPage } from './modules/org-unit/OrgUnitFormPage';
 import { CaseFileListPage } from './modules/case-file/CaseFileListPage';
 import { ReportsPage } from './modules/reports/ReportsPage';
 import { useAuth } from './modules/auth/useAuth';
@@ -38,7 +41,11 @@ export const App: React.FC = () => {
               <Route path="/users" element={<UserListPage />} />
               <Route path="/users/nuevo" element={<UserFormPage />} />
               <Route path="/users/:id" element={<UserDetailPage />} />
-              <Route path="/users/:id/editar" element={<RoleFormPage />} />
+              <Route path="/users/:id/editar" element={<UserFormPage />} />
+              <Route path="/org-unit" element={<OrgUnitListPage />} />
+              <Route path="/org-unit/nuevo" element={<OrgUnitFormPage />} />
+              <Route path="/org-unit/:id" element={<OrgUnitDetailPage />} />
+              <Route path="/org-unit/:id/editar" element={<OrgUnitFormPage />} />
               <Route path="/case-files" element={<CaseFileListPage />} />
               <Route path="/reports" element={<ReportsPage />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
